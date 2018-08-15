@@ -4,8 +4,6 @@ import multiprocessing
 
 
 def number_of_workers():
-    if environ.get('DEV', 'false') == 'true':
-        return 1
     return (multiprocessing.cpu_count() * 2) + 1
 
 
@@ -26,7 +24,7 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 DEFAULT_OPTIONS = {
-    'bind': '%s:%s' % ('127.0.0.1', '8080'),
+    'bind': '127.0.0.1:8080',
     'workers': number_of_workers(),
 }
 
@@ -35,4 +33,10 @@ def run(app, options=None):
     if options is None:
         options = {}
     options = dict(DEFAULT_OPTIONS, **options)
+
+    if environ.get('DEV', 'false') == 'true':
+        host, port = options['bind'].split(':')
+        # disable reloader because of pex
+        return app.run(host=host, port=port, use_reloader=False, debug=True)
+
     StandaloneApplication(app, options).run()
