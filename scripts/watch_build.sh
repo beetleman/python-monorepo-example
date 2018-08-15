@@ -4,5 +4,5 @@
 watchmedo shell-command \
     --patterns="*.py" \
     --recursive \
-    --command='./pants --changed binary ::' \
+    --command='./pants binary ::' \
     ./src
