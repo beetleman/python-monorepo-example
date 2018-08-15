@@ -1,0 +1,25 @@
+version: "2.1"
+
+services:
+  builder:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.pants
+    volumes:
+      - ./:/project
+    command: bash ./scripts/watch_build.sh
+
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.pex
+    environment:
+      - DEV=true
+    volumes:
+      - ./dist:/apps
+      - ./scripts:/scripts
+    depends_on:
+      - builder
+    ports:
+      - "5000:5000"
+    command: sh /scripts/watch_pex.sh

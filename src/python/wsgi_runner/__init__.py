@@ -1,8 +1,11 @@
+from os import environ
 import gunicorn.app.base
 import multiprocessing
 
 
 def number_of_workers():
+    if environ.get('DEV', 'false') == 'true':
+        return 1
     return (multiprocessing.cpu_count() * 2) + 1
 
 

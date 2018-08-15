@@ -1,0 +1,9 @@
+FROM python:3.7-alpine
+MAINTAINER Mateusz Probachta <mateusz.probachta@gmail.com>
+
+RUN pip install watchdog && \
+    mkdir /apps
+
+WORKDIR /apps
+ADD ./dist /apps
+ADD ./scripts /scripts
