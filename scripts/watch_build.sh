@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-./pants binary ./src/python/app:app
+./pants binary ::
 watchmedo shell-command \
     --patterns="*.py" \
     --recursive \
-    --command='./pants binary ./src/python/app:app' \
+    --command='./pants --changed binary ::' \
     ./src

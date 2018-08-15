@@ -22,4 +22,19 @@ services:
       - builder
     ports:
       - "5000:5000"
-    command: sh /scripts/watch_pex.sh
+    command: sh /scripts/watch_pex.sh app.pex
+
+  app2:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.pex
+    environment:
+      - DEV=true
+    volumes:
+      - ./dist:/apps
+      - ./scripts:/scripts
+    depends_on:
+      - builder
+    ports:
+      - "5001:5001"
+    command: sh /scripts/watch_pex.sh app2.pex
